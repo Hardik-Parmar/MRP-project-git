@@ -85,6 +85,7 @@ def handleLogout(request):
     messages.success(request, "Successfully Logged Out")
     return redirect('statichome')
 
+#View Documents
 def viewDocuments(request):
     dict1 = {}
     try:
