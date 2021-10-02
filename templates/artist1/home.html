@@ -1,0 +1,201 @@
+{% extends 'template_home.html' %}
+
+{% block title %} Music Royalty Payment {% endblock %}
+
+{%  block blogactive %} active {% endblock %}
+
+{% block style %}
+    table 
+    {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th 
+    {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) 
+    {
+        background-color: #dddddd;
+    }
+    .title-print-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0px;
+}
+.title-print-btn h2 {
+    margin-bottom: 0;
+    font-size: 26px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: 600;
+}
+.title-print-btn .print-btn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 6px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+    
+    .graph-table table {
+    margin-top: 50px;
+}
+.graph-table table thead tr th {
+    color: #fff;
+}
+.graph-table table thead {
+    background-color: #000;
+}
+{% endblock style %}
+
+{% block body %}
+    <div class="container">
+    <div class="title-print-btn">
+        <h2>DASHBOARD</h2>
+        <span><input class="print-btn" type="button" value="Print this page" onClick="window.print()"></span>
+        </div>
+         <div class="graph-canvas">
+   <canvas id="myChart" width="10" height="10"></canvas>
+    </div>
+         <div class="graph-table">
+        <table class='mt-4'>
+        <thead>
+            <tr>
+                <th>Month Year</th>
+                <th>Total RBT</th>
+                <th>Total Kisom</th>
+                <th>Total Altafonte (AOA)</th>
+                <th>Total Artista</th>
+            </tr>
+            </thead>
+            {% for item in qs %}
+                <tr>
+                    <td>{{item.month_year}}</td>
+                    <td>{{item.rbt_val}}</td>
+                    <td>{{item.kisom_val}}</td>
+                    <td>{{item.altafonte_aoa}}</td>
+                    <td>{{item.total_artista}}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td><b>Total</b></td>
+                <td><b>{{total_rbt.rbt_val__sum}}</b></td>
+                <td><b>{{total_kisom.kisom_val__sum}}</b></td>
+                <td><b>{{total_altafonte_aoa.altafonte_aoa__sum}}</b></td>
+                <td><b>{{total_artista.total_artista__sum}}</b></td>
+            </tr>
+        </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function(){
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: 
+            {
+                labels: [{% for item in qs %}
+                    '{{item.month_year}}',
+                    {% endfor %}],  //JAN 2021, FEB 2021 etc
+                
+                datasets: 
+                [
+                    {
+                        label: 'TOTAL RBT', //name of column kisom, rbt, etc
+                        data: [{% for item in qs %}
+                            {{item.rbt_val}},
+                        {% endfor %}],
+                        backgroundColor: [
+                            {% for item in qs %}
+                                'rgba(255, 99, 132, 0.2)',
+                            {% endfor %}
+                        ],
+                        borderColor: [
+                            {% for item in qs %}
+                                'rgba(255, 99, 132, 1)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 1
+                    },
+                    
+                    {
+                        label: 'TOTAL KISOM', //name of column kisom, rbt, etc
+                        data: [{% for item in qs %}
+                            {{item.kisom_val}},
+                        {% endfor %}],
+                        backgroundColor: [
+                            {% for item in qs %}
+                                'rgba(54, 162, 235, 0.2)',
+                            {% endfor %}
+                        ],
+                        borderColor: [
+                            {% for item in qs %}
+                                'rgba(54, 162, 235, 1)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 1
+                    },
+
+                    {
+                        label: 'TOTAL ALTAFONTE (AOA)', //name of column kisom, rbt, etc
+                        data: [{% for item in qs %}
+                            {{item.altafonte_aoa}},
+                        {% endfor %}],
+                        backgroundColor: [
+                            {% for item in qs %}
+                                'rgba(153, 102, 255, 0.2)',
+                            {% endfor %}
+                        ],
+                        borderColor: [
+                            {% for item in qs %}
+                                'rgba(153, 102, 255, 1)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 1    
+                    },
+
+                    {
+                        label: 'TOTAL ARTISTA', //name of column kisom, rbt, etc
+                        data: [{% for item in qs %}
+                            {{item.total_artista}},
+                        {% endfor %}],
+                        backgroundColor: [
+                            {% for item in qs %}
+                                'rgba(255, 206, 86, 0.2)',
+                            {% endfor %}
+                        ],
+                        borderColor: [
+                            {% for item in qs %}
+                                'rgba(255, 206, 86, 1)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 1    
+                    }
+                ]
+            },
+        options: 
+        {
+            barValueSpacing:20,
+            scales: 
+            {
+                y: 
+                {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock js %}

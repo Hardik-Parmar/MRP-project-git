@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}
+General Report
+{% endblock title %}
+
+{% block style %}
+    table 
+    {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th 
+    {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) 
+    {
+        background-color: #dddddd;
+    }
+  
+    .graph-table table {
+    margin-top: 50px;
+}
+.graph-table table thead tr th {
+    color: #fff;
+}
+.graph-table table thead {
+    background-color: #000;
+}
+.title-print-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0px;
+}
+.title-print-btn h2 {
+    margin-bottom: 0;
+    font-size: 26px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: 600;
+}
+.title-print-btn .print-btn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 6px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+{% endblock style %}
+
+{% block content %}
+
+<div class='container' style="margin-left:25px; margin-right:25px">
+<div class="title-print-btn">
+    <h2>General Report</h2>
+    <span><input type="button" class="print-btn" value="Print this page" onClick="window.print()"></span>
+</div>
+
+    <div class="graph-canvas">
+    <canvas id="myChart" ></canvas>
+    </div>
+    <div class="graph-table">
+    <table>
+        <thead>
+        <tr>
+        <th>Month Year</th>
+        {% for item in qs %}
+                <th><b>
+                    {{item.month_year}}
+                </b></th>
+            {% endfor %}
+            <th><b>Total</b></th>
+        </tr>
+        </thead>
+        <tr>
+            <th>Total RBT</th>
+            {% for item in total_rbt %}
+                <td>
+                    {{item.dcount}}
+                </td>
+            {% endfor %}
+            <td><b>
+                {{final_rbt.rbt_val__sum}}
+            </b></td>
+        </tr>
+
+        <tr>
+            <th>Total Kisom</th>
+            {% for item in total_kisom %}
+                <td>
+                    {{item.dcount}}
+                </td>
+            {% endfor %}
+            <td><b>
+                {{final_kisom.kisom_val__sum}}        
+            </b></td>
+        </tr>
+
+        <tr>
+            <th>Total Altafonte (AOA)</th>
+            {% for item in total_altafonte_aoa %}
+                <td>
+                    {{item.dcount}}
+                </td>
+            {% endfor %}
+            <td><b>
+                {{final_altafonte.altafonte_aoa__sum}}
+            </b></td>            
+        </tr>
+
+        <tr>
+            <th>Total Artista</th>
+            {% for item in total_artista %}
+                <td>
+                    {{item.dcount}}
+                </td>
+            {% endfor %}
+            <td><b>
+                {{final_artista.total_artista__sum}}
+            </b></td>
+        </tr>
+    </table>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+$(document).ready(function(){
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: 
+            {
+                labels: [{% for item in qs %}
+                            '{{item.month_year}}',
+                    {% endfor %}],  //JAN 2021, FEB 2021 etc
+                
+                datasets: 
+                [
+                    {
+                        label: 'TOTAL RBT', //name of column kisom, rbt, etc
+                        data: [{% for item in total_rbt %}
+                            {{item.dcount}},
+                        {% endfor %}],
+                        backgroundColor: [
+                            {% for item in total_rbt %}
+                                'rgba(255, 99, 132, 0.2)',
+                            {% endfor %}
+                        ],
+                        borderColor: [
+                            {% for item in total_rbt %}
+                                'rgba(255, 99, 132, 1)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 1
+                    },
+                    
+                    {
+                        label: 'TOTAL KISOM', //name of column kisom, rbt, etc
+                        data: [{% for item in total_kisom %}
+                            {{item.dcount}},
+                        {% endfor %}],
+                        backgroundColor: [
+                            {% for item in total_kisom %}
+                                'rgba(54, 162, 235, 0.2)',
+                            {% endfor %}
+                        ],
+                        borderColor: [
+                            {% for item in total_kisom %}
+                                'rgba(54, 162, 235, 1)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 1
+                    },
+
+                    {
+                        label: 'TOTAL ALTAFONTE (AOA)', //name of column kisom, rbt, etc
+                        data: [{% for item in total_altafonte_aoa %}
+                            {{item.dcount}},
+                        {% endfor %}],
+                        backgroundColor: [
+                            {% for item in total_altafonte_aoa %}
+                                'rgba(153, 102, 255, 0.2)',
+                            {% endfor %}
+                        ],
+                        borderColor: [
+                            {% for item in total_altafonte_aoa %}
+                                'rgba(153, 102, 255, 1)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 1    
+                    },
+
+                    {
+                        label: 'TOTAL ARTISTA', //name of column kisom, rbt, etc
+                        data: [{% for item in total_artista %}
+                            {{item.dcount}},
+                        {% endfor %}],
+                        backgroundColor: [
+                            {% for item in total_artista %}
+                                'rgba(255, 206, 86, 0.2)',
+                            {% endfor %}
+                        ],
+                        borderColor: [
+                            {% for item in total_artista %}
+                                'rgba(255, 206, 86, 1)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 1    
+                    }
+                ]
+            },
+        options: {
+            barValueSpacing:20,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock scripts %}

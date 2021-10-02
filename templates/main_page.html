@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Export</title>
+</head>
+<body>
+    <form action="/app_name/upload/" method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+
+        <input type="file" name="temp_file" id="temp_file" required>
+
+        <br><br>
+        <input type="submit" value="Upload XSLX File">
+    </form>
+
+    <br><br>
+    <p><b>Download the Files</b></p>
+    <a href="{% url 'csv' %}">CSV Download</a><br><br>
+    <a href="{% url 'json' %}">JSON Download</a><br><br>
+    <a href="{% url 'xls' %}">XLS Download</a>
+</body>
+</html>

@@ -1,0 +1,78 @@
+{% extends 'template_home.html' %}
+
+{% block title %} Music Royalty Payment {% endblock %}
+
+{%  block blogactive %} active {% endblock %}
+
+{% block style %}
+    table 
+    {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th 
+    {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) 
+    {
+        background-color: #dddddd;
+    }
+  
+    .graph-table table 
+    {
+        margin-top: 50px;
+    }
+
+    .graph-table table thead tr th 
+    {
+        color: #fff;
+    }
+    .graph-table table thead 
+    {
+        background-color: #000;
+    }
+    .title-print-btn 
+    {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 0px;
+    }
+{% endblock style %}
+
+{% block body %}
+    <div class="container">
+        {% if context|length == 0 %}
+
+            <h2>No Documents have been uploaded or No Documents have been approved by Admin </h2>
+        
+        {% else %}
+            <br><h2>YOUR DOCUMENTS </h2>
+            <div class="graph-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Artist Name</th>
+                            <th>Document</th>
+                        </tr>
+                    </thead>
+                    {% for item in context %}
+                        <tr>
+                            <td>{{request.user.first_name}}</td>
+                            <td><a href="{{item.document.url}}">{{item.document}}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}    
+    </div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}
