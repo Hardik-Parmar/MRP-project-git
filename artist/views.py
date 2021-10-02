@@ -50,6 +50,7 @@ def handleLogin(request):
                     # if authentication fails then USER become "NONE"
                     if (user is not None):
                         # if user is authenticated then and then it will enter inside IF block and then LOGIN allowed
+                        # only allow to logged when user profile is approved by Admin
                         if(obj2.admin_approval_status):
                             login(request, user)
                             request.session['name'] = obj1.first_name
