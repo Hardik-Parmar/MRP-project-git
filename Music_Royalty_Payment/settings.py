@@ -74,6 +74,7 @@ ROOT_URLCONF = 'Music_Royalty_Payment.urls'
 # ROOT_URLCONF = 'core.urls'
 LOGIN_REDIRECT_URL = "/artist/login/"  # Route defined in app/urls.py
 LOGOUT_REDIRECT_URL = "/artist/login/"  # Route defined in app/urls.py
+print("code works!!!")
 
 TEMPLATES = [
     {
