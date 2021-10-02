@@ -21,6 +21,7 @@ def artistHome(request):
 def artistHomeWithOutLogin(request):
     return render(request, "artist1/home2.html")
 
+#Login
 def handleLogin(request):
     if (request.method == 'POST'):
         # get the POST parameter
@@ -78,6 +79,7 @@ def handleLogin(request):
 
     return HttpResponse("404 Not Found")
 
+#Logout
 def handleLogout(request):
     logout(request)
     messages.success(request, "Successfully Logged Out")
