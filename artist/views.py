@@ -76,8 +76,10 @@ def handleLogin(request):
             return redirect('statichome')
     else:
         return HttpResponse("ERROR")
+   
+# return error for not found
 
-    return HttpResponse("404 Not Found")
+return HttpResponse("404 Not Found")
 
 #Logout
 def handleLogout(request):
