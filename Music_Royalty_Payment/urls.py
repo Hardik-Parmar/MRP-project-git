@@ -34,5 +34,6 @@ urlpatterns = [
     path('artist1/',include('artist.urls')),
     path("artist/", include("apps.authentication.urls")), # Auth routes - login / register
     path("artist/", include("apps.app.urls"))
+    
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
